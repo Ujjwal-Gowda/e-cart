@@ -169,7 +169,7 @@ export default function CartPage({
               >
                 {item.productId?.image ? (
                   <img
-                    src={item.productId.image}
+                    src={`./public/images/${item.productId.image}`}
                     alt={item.productId.name}
                     style={{
                       width: "100%",
@@ -200,7 +200,7 @@ export default function CartPage({
                     fontSize: "14px",
                   }}
                 >
-                  Quantity: {item.quantity} × $
+                  Quantity: {item.quantity} × rs
                   {item.productId?.price?.toFixed(2) || "0.00"}
                 </p>
                 <div
@@ -230,7 +230,7 @@ export default function CartPage({
                     marginBottom: "12px",
                   }}
                 >
-                  ${((item.productId?.price || 0) * item.quantity).toFixed(2)}
+                  Rs.{((item.productId?.price || 0) * item.quantity).toFixed(2)}
                 </div>
                 <button
                   onClick={() => onRemove(item._id)}
@@ -298,7 +298,7 @@ export default function CartPage({
                 color: "#000",
               }}
             >
-              ${total.toFixed(2)}
+              Rs.{total.toFixed(2)}
             </span>
           </div>
 

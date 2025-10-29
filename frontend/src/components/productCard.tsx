@@ -16,7 +16,7 @@ export default function ProductCard({
   const handleAddToCart = async () => {
     setIsAdding(true);
     try {
-      await onAddToCart(product._id);
+      onAddToCart(product._id);
     } finally {
       setTimeout(() => setIsAdding(false), 500);
     }
@@ -54,7 +54,7 @@ export default function ProductCard({
       >
         {product.image ? (
           <img
-            src={product.image}
+            src={`./public/images/${product.image}`}
             alt={product.name}
             style={{
               width: "100%",
@@ -107,7 +107,7 @@ export default function ProductCard({
               color: "#000",
             }}
           >
-            ${product.price.toFixed(2)}
+            Rs.{product.price.toFixed(2)}
           </div>
           <div
             style={{

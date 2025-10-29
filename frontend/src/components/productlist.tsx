@@ -49,7 +49,7 @@ export default function ProductList({
               fontWeight: "400",
             }}
           >
-            Premium products curated just for you
+            Plants for all ocasions
           </p>
         </div>
 
