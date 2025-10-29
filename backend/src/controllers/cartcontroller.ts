@@ -6,24 +6,44 @@ export const getCart = async (req: Request, res: Response) => {
   try {
     const carts = await cart.find().populate("productId");
 
+    console.log("Cart items found:", carts); // Debug log
+
     if (!carts || carts.length === 0) {
       return res.status(200).json({ cart: [], total: 0 });
     }
-    const total = carts.reduce(
-      (sum, item: any) => sum + item.productId.price * item.quantity,
-      0,
-    );
 
-    return res.status(200).json({ cart: carts, total });
+    // Calculate total
+    const total = carts.reduce((sum, item: any) => {
+      if (item.productId && item.productId.price) {
+        return sum + item.productId.price * item.quantity;
+      }
+      return sum;
+    }, 0);
+
+    // Return both cart array and total
+    return res.status(200).json({
+      cart: carts,
+      total: total,
+    });
   } catch (error) {
     console.error("Error fetching cart:", error);
-    return res.status(500).json({ message: "Failed to fetch cart", error });
+    return res.status(500).json({
+      message: "Failed to fetch cart",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
 
 export const addToCart = async (req: Request, res: Response) => {
   try {
     const { productId, quantity } = req.body;
+
+    console.log(
+      "Adding to cart - productId:",
+      productId,
+      "quantity:",
+      quantity,
+    );
 
     if (!productId || !quantity) {
       return res
@@ -42,11 +62,27 @@ export const addToCart = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const newCartItem = await cart.create({ productId, quantity });
-    return res.status(201).json(newCartItem);
+    // Check if product already exists in cart
+    const existingCartItem = await cart.findOne({ productId });
+
+    if (existingCartItem) {
+      // Update quantity if item already exists
+      existingCartItem.quantity += quantity;
+      await existingCartItem.save();
+      console.log("Updated existing cart item:", existingCartItem);
+      return res.status(200).json(existingCartItem);
+    } else {
+      // Create new cart item
+      const newCartItem = await cart.create({ productId, quantity });
+      console.log("Created new cart item:", newCartItem);
+      return res.status(201).json(newCartItem);
+    }
   } catch (error) {
     console.error("Error adding to cart:", error);
-    return res.status(500).json({ message: "Failed to add to cart", error });
+    return res.status(500).json({
+      message: "Failed to add to cart",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
 
@@ -54,23 +90,30 @@ export const removeFromCart = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    console.log("Removing cart item with id:", id);
+
     const deletedItem = await cart.findByIdAndDelete(id);
     if (!deletedItem) {
       return res.status(404).json({ message: "Cart item not found" });
     }
 
+    console.log("Deleted cart item:", deletedItem);
     return res.status(200).json({ message: "Item removed from cart" });
   } catch (error) {
     console.error("Error removing cart item:", error);
-    return res
-      .status(500)
-      .json({ message: "Failed to remove cart item", error });
+    return res.status(500).json({
+      message: "Failed to remove cart item",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
 
 export const checkOut = async (req: Request, res: Response) => {
   try {
     const { cartItems } = req.body;
+
+    console.log("Checkout request - cartItems:", cartItems);
+
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
       return res
         .status(400)
@@ -83,9 +126,14 @@ export const checkOut = async (req: Request, res: Response) => {
     );
 
     const receipt = { total, timestamp: new Date() };
+    console.log("Checkout successful - receipt:", receipt);
+
     return res.status(200).json({ message: "Checkout successful", receipt });
   } catch (error) {
     console.error("Error during checkout:", error);
-    return res.status(500).json({ message: "Checkout failed", error });
+    return res.status(500).json({
+      message: "Checkout failed",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
