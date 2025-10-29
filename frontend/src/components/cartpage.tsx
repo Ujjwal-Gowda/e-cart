@@ -330,15 +330,7 @@ export default function CartPage({
         </div>
       </div>
 
-      {showCheckout && (
-        <CheckoutModal
-          onClose={() => setShowCheckout(false)}
-          onSubmit={async (name: string, email: string) => {
-            await onCheckout(name, email);
-            setShowCheckout(false);
-          }}
-        />
-      )}
+      {showCheckout && <CheckoutModal onClose={() => setShowCheckout(false)} />}
     </div>
   );
 }

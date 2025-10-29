@@ -36,7 +36,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone https://github.com/Ujjwal-Gowda/e-cart.git
-cd plantify
+cd e-cart
 ```
 
 ### 2. Backend Setup
