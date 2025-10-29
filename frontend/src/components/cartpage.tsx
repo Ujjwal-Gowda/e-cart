@@ -13,7 +13,6 @@ export default function CartPage({
   cartItems,
   total,
   onRemove,
-  onCheckout,
 }: CartPageProps) {
   const [showCheckout, setShowCheckout] = useState(false);
 
