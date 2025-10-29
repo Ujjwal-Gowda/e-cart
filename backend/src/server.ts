@@ -11,7 +11,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://your-frontend.onrender.com",
+  "https://e-cart-peach-psi.vercel.app",
 ];
 
 app.use(
