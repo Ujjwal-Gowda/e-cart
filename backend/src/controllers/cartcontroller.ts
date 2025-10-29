@@ -6,13 +6,12 @@ export const getCart = async (req: Request, res: Response) => {
   try {
     const carts = await cart.find().populate("productId");
 
-    console.log("Cart items found:", carts); // Debug log
+    console.log("Cart items found:", carts);
 
     if (!carts || carts.length === 0) {
       return res.status(200).json({ cart: [], total: 0 });
     }
 
-    // Calculate total
     const total = carts.reduce((sum, item: any) => {
       if (item.productId && item.productId.price) {
         return sum + item.productId.price * item.quantity;
@@ -20,7 +19,6 @@ export const getCart = async (req: Request, res: Response) => {
       return sum;
     }, 0);
 
-    // Return both cart array and total
     return res.status(200).json({
       cart: carts,
       total: total,
@@ -62,17 +60,14 @@ export const addToCart = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if product already exists in cart
     const existingCartItem = await cart.findOne({ productId });
 
     if (existingCartItem) {
-      // Update quantity if item already exists
       existingCartItem.quantity += quantity;
       await existingCartItem.save();
       console.log("Updated existing cart item:", existingCartItem);
       return res.status(200).json(existingCartItem);
     } else {
-      // Create new cart item
       const newCartItem = await cart.create({ productId, quantity });
       console.log("Created new cart item:", newCartItem);
       return res.status(201).json(newCartItem);

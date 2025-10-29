@@ -19,7 +19,13 @@ export default function CartPage({
 
   if (cartItems.length === 0) {
     return (
-      <div style={{ padding: "40px 24px", minHeight: "calc(100vh - 72px)" }}>
+      <div
+        style={{
+          padding: "40px 24px",
+          minHeight: "calc(100vh - 72px)",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
         <div
           style={{
             maxWidth: "800px",
@@ -33,19 +39,21 @@ export default function CartPage({
         >
           <div
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-              borderRadius: "24px",
+              backgroundColor: "white",
+              borderRadius: "8px",
               padding: "60px 40px",
               textAlign: "center",
-              boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+              boxShadow:
+                "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
               width: "100%",
+              border: "1px solid #e0e0e0",
             }}
           >
             <div
               style={{
                 fontSize: "120px",
                 marginBottom: "24px",
-                opacity: 0.7,
+                opacity: 0.3,
               }}
             >
               🛒
@@ -53,8 +61,8 @@ export default function CartPage({
             <h2
               style={{
                 fontSize: "32px",
-                fontWeight: "800",
-                color: "#1f2937",
+                fontWeight: "700",
+                color: "#000",
                 margin: "0 0 16px 0",
               }}
             >
@@ -63,27 +71,12 @@ export default function CartPage({
             <p
               style={{
                 fontSize: "18px",
-                color: "#6b7280",
+                color: "#666",
                 margin: "0 0 32px 0",
               }}
             >
               Looks like you haven't added anything to your cart yet
             </p>
-            <div
-              style={{
-                display: "inline-flex",
-                padding: "14px 32px",
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                color: "white",
-                borderRadius: "12px",
-                fontSize: "16px",
-                fontWeight: "600",
-                textDecoration: "none",
-                cursor: "pointer",
-              }}
-            >
-              Continue Shopping
-            </div>
           </div>
         </div>
       </div>
@@ -91,7 +84,13 @@ export default function CartPage({
   }
 
   return (
-    <div style={{ padding: "40px 24px", minHeight: "calc(100vh - 72px)" }}>
+    <div
+      style={{
+        padding: "40px 24px",
+        minHeight: "calc(100vh - 72px)",
+        backgroundColor: "#f5f5f5",
+      }}
+    >
       <div
         style={{
           maxWidth: "1200px",
@@ -102,10 +101,10 @@ export default function CartPage({
           <h2
             style={{
               fontSize: "42px",
-              fontWeight: "800",
-              color: "white",
+              fontWeight: "700",
+              color: "#000",
               margin: "0 0 12px 0",
-              textShadow: "0 2px 10px rgba(0,0,0,0.2)",
+              letterSpacing: "-1px",
             }}
           >
             Shopping Cart
@@ -113,7 +112,7 @@ export default function CartPage({
           <p
             style={{
               fontSize: "18px",
-              color: "rgba(255, 255, 255, 0.9)",
+              color: "#666",
               margin: 0,
             }}
           >
@@ -126,7 +125,7 @@ export default function CartPage({
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
-            gap: "24px",
+            gap: "16px",
             marginBottom: "24px",
           }}
         >
@@ -134,36 +133,41 @@ export default function CartPage({
             <div
               key={item._id}
               style={{
-                backgroundColor: "rgba(255, 255, 255, 0.95)",
-                borderRadius: "16px",
-                padding: "24px",
+                backgroundColor: "white",
+                borderRadius: "8px",
+                padding: "20px",
                 display: "grid",
                 gridTemplateColumns: "120px 1fr auto",
-                gap: "24px",
+                gap: "20px",
                 alignItems: "center",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                transition: "transform 0.2s ease",
+                boxShadow:
+                  "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+                transition: "box-shadow 0.3s ease",
+                border: "1px solid #e0e0e0",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "translateY(-2px)")
+              (e.currentTarget.style.boxShadow =
+                "0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.12)")
               }
               onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "translateY(0)")
+              (e.currentTarget.style.boxShadow =
+                "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)")
               }
             >
               <div
                 style={{
                   width: "120px",
                   height: "120px",
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: "12px",
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: "6px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   overflow: "hidden",
+                  border: "1px solid #e0e0e0",
                 }}
               >
-                {item.productId.image ? (
+                {item.productId?.image ? (
                   <img
                     src={item.productId.image}
                     alt={item.productId.name}
@@ -174,7 +178,7 @@ export default function CartPage({
                     }}
                   />
                 ) : (
-                  <div style={{ fontSize: "48px", opacity: 0.3 }}>📦</div>
+                  <div style={{ fontSize: "48px", opacity: 0.2 }}>📦</div>
                 )}
               </div>
 
@@ -182,74 +186,90 @@ export default function CartPage({
                 <h3
                   style={{
                     margin: "0 0 8px 0",
-                    fontSize: "22px",
-                    fontWeight: "700",
-                    color: "#1f2937",
+                    fontSize: "20px",
+                    fontWeight: "600",
+                    color: "#000",
                   }}
                 >
-                  {item.productId.name}
+                  {item.productId?.name || "Product"}
                 </h3>
                 <p
                   style={{
-                    margin: "0 0 12px 0",
-                    color: "#6b7280",
-                    fontSize: "16px",
+                    margin: "0 0 8px 0",
+                    color: "#666",
+                    fontSize: "14px",
                   }}
                 >
-                  Quantity: {item.quantity} × ${item.productId.price.toFixed(2)}
+                  Quantity: {item.quantity} × $
+                  {item.productId?.price?.toFixed(2) || "0.00"}
                 </p>
                 <div
                   style={{
-                    fontSize: "24px",
-                    fontWeight: "800",
-                    background:
-                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
+                    display: "inline-block",
+                    fontSize: "11px",
+                    color: "#000",
+                    backgroundColor: "#fff",
+                    padding: "4px 10px",
+                    borderRadius: "3px",
+                    fontWeight: "600",
+                    border: "1px solid #000",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
                   }}
                 >
-                  ${(item.productId.price * item.quantity).toFixed(2)}
+                  In Stock
                 </div>
               </div>
 
-              <button
-                onClick={() => onRemove(item._id)}
-                style={{
-                  padding: "12px 24px",
-                  backgroundColor: "#fee2e2",
-                  color: "#dc2626",
-                  border: "2px solid #fecaca",
-                  borderRadius: "12px",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  transition: "all 0.2s ease",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#dc2626";
-                  e.currentTarget.style.color = "white";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#fee2e2";
-                  e.currentTarget.style.color = "#dc2626";
-                }}
-              >
-                🗑️ Remove
-              </button>
+              <div style={{ textAlign: "right" }}>
+                <div
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: "700",
+                    color: "#000",
+                    marginBottom: "12px",
+                  }}
+                >
+                  ${((item.productId?.price || 0) * item.quantity).toFixed(2)}
+                </div>
+                <button
+                  onClick={() => onRemove(item._id)}
+                  style={{
+                    padding: "10px 20px",
+                    backgroundColor: "#fff",
+                    color: "#000",
+                    border: "1px solid #000",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    transition: "all 0.3s ease",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#000";
+                    e.currentTarget.style.color = "#fff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.color = "#000";
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
         <div
           style={{
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
-            borderRadius: "16px",
+            backgroundColor: "white",
+            borderRadius: "8px",
             padding: "32px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+            border: "1px solid #e0e0e0",
           }}
         >
           <div
@@ -259,14 +279,14 @@ export default function CartPage({
               alignItems: "center",
               marginBottom: "24px",
               paddingBottom: "24px",
-              borderBottom: "2px solid #e5e7eb",
+              borderBottom: "2px solid #e0e0e0",
             }}
           >
             <span
               style={{
                 fontSize: "24px",
-                fontWeight: "700",
-                color: "#1f2937",
+                fontWeight: "600",
+                color: "#000",
               }}
             >
               Total Amount:
@@ -274,11 +294,8 @@ export default function CartPage({
             <span
               style={{
                 fontSize: "36px",
-                fontWeight: "800",
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                fontWeight: "700",
+                color: "#000",
               }}
             >
               ${total.toFixed(2)}
@@ -289,33 +306,26 @@ export default function CartPage({
             onClick={() => setShowCheckout(true)}
             style={{
               width: "100%",
-              padding: "18px",
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              padding: "16px",
+              backgroundColor: "#000",
               color: "white",
               border: "none",
-              borderRadius: "12px",
+              borderRadius: "4px",
               cursor: "pointer",
-              fontSize: "18px",
-              fontWeight: "700",
+              fontSize: "14px",
+              fontWeight: "600",
               transition: "all 0.3s ease",
-              boxShadow: "0 4px 6px rgba(16, 185, 129, 0.3)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "12px",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow =
-                "0 8px 15px rgba(16, 185, 129, 0.4)";
+              e.currentTarget.style.backgroundColor = "#333";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 4px 6px rgba(16, 185, 129, 0.3)";
+              e.currentTarget.style.backgroundColor = "#000";
             }}
           >
-            ✓ Proceed to Checkout
+            Proceed to Checkout
           </button>
         </div>
       </div>

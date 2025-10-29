@@ -31,8 +31,7 @@ export default function CheckoutModal({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
-        backdropFilter: "blur(4px)",
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -46,12 +45,14 @@ export default function CheckoutModal({
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundColor: "white",
-          borderRadius: "24px",
+          borderRadius: "8px",
           padding: "40px",
           maxWidth: "500px",
           width: "100%",
-          boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3)",
+          boxShadow:
+            "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
           animation: "slideUp 0.3s ease-out",
+          border: "1px solid #e0e0e0",
         }}
       >
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
@@ -67,13 +68,13 @@ export default function CheckoutModal({
             style={{
               margin: "0 0 8px 0",
               fontSize: "32px",
-              fontWeight: "800",
-              color: "#1f2937",
+              fontWeight: "700",
+              color: "#000",
             }}
           >
             Complete Your Order
           </h2>
-          <p style={{ margin: 0, color: "#6b7280", fontSize: "16px" }}>
+          <p style={{ margin: 0, color: "#666", fontSize: "16px" }}>
             Enter your details to finalize the purchase
           </p>
         </div>
@@ -84,9 +85,11 @@ export default function CheckoutModal({
               style={{
                 display: "block",
                 marginBottom: "8px",
-                color: "#374151",
+                color: "#000",
                 fontWeight: "600",
                 fontSize: "14px",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
               }}
             >
               Full Name
@@ -100,15 +103,15 @@ export default function CheckoutModal({
               style={{
                 width: "100%",
                 padding: "14px 16px",
-                border: "2px solid #e5e7eb",
-                borderRadius: "12px",
+                border: "1px solid #e0e0e0",
+                borderRadius: "4px",
                 fontSize: "16px",
                 boxSizing: "border-box",
                 transition: "border-color 0.2s ease",
                 outline: "none",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#667eea")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#000")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#e0e0e0")}
             />
           </div>
 
@@ -117,9 +120,11 @@ export default function CheckoutModal({
               style={{
                 display: "block",
                 marginBottom: "8px",
-                color: "#374151",
+                color: "#000",
                 fontWeight: "600",
                 fontSize: "14px",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
               }}
             >
               Email Address
@@ -133,15 +138,15 @@ export default function CheckoutModal({
               style={{
                 width: "100%",
                 padding: "14px 16px",
-                border: "2px solid #e5e7eb",
-                borderRadius: "12px",
+                border: "1px solid #e0e0e0",
+                borderRadius: "4px",
                 fontSize: "16px",
                 boxSizing: "border-box",
                 transition: "border-color 0.2s ease",
                 outline: "none",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#667eea")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#000")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#e0e0e0")}
             />
           </div>
 
@@ -151,21 +156,23 @@ export default function CheckoutModal({
               onClick={onClose}
               style={{
                 flex: 1,
-                padding: "16px",
-                backgroundColor: "#f3f4f6",
-                color: "#374151",
-                border: "none",
-                borderRadius: "12px",
+                padding: "14px",
+                backgroundColor: "#fff",
+                color: "#000",
+                border: "1px solid #000",
+                borderRadius: "4px",
                 cursor: "pointer",
-                fontSize: "16px",
+                fontSize: "14px",
                 fontWeight: "600",
                 transition: "all 0.2s ease",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#e5e7eb";
+                e.currentTarget.style.backgroundColor = "#f5f5f5";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#f3f4f6";
+                e.currentTarget.style.backgroundColor = "#fff";
               }}
             >
               Cancel
@@ -175,46 +182,36 @@ export default function CheckoutModal({
               disabled={loading}
               style={{
                 flex: 1,
-                padding: "16px",
-                background: loading
-                  ? "#9ca3af"
-                  : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                padding: "14px",
+                backgroundColor: loading ? "#666" : "#000",
                 color: "white",
                 border: "none",
-                borderRadius: "12px",
+                borderRadius: "4px",
                 cursor: loading ? "not-allowed" : "pointer",
-                fontSize: "16px",
-                fontWeight: "700",
+                fontSize: "14px",
+                fontWeight: "600",
                 transition: "all 0.3s ease",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "8px",
-                boxShadow: loading
-                  ? "none"
-                  : "0 4px 6px rgba(16, 185, 129, 0.3)",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                opacity: loading ? 0.6 : 1,
               }}
               onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 15px rgba(16, 185, 129, 0.4)";
-                }
+                if (!loading) e.currentTarget.style.backgroundColor = "#333";
               }}
               onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow =
-                    "0 4px 6px rgba(16, 185, 129, 0.3)";
-                }
+                if (!loading) e.currentTarget.style.backgroundColor = "#000";
               }}
             >
               {loading ? (
                 <>
                   <div
                     style={{
-                      width: "18px",
-                      height: "18px",
+                      width: "16px",
+                      height: "16px",
                       border: "2px solid rgba(255,255,255,0.3)",
                       borderTop: "2px solid white",
                       borderRadius: "50%",
@@ -224,7 +221,7 @@ export default function CheckoutModal({
                   Processing...
                 </>
               ) : (
-                <>✓ Place Order</>
+                <>Place Order</>
               )}
             </button>
           </div>

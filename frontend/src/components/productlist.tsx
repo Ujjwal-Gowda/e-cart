@@ -11,7 +11,13 @@ export default function ProductList({
   onAddToCart,
 }: ProductListProps) {
   return (
-    <div style={{ padding: "40px 24px" }}>
+    <div
+      style={{
+        padding: "40px 24px",
+        backgroundColor: "#f5f5f5",
+        minHeight: "calc(100vh - 72px)",
+      }}
+    >
       <div
         style={{
           maxWidth: "1400px",
@@ -27,10 +33,10 @@ export default function ProductList({
           <h2
             style={{
               fontSize: "42px",
-              fontWeight: "800",
-              color: "white",
+              fontWeight: "700",
+              color: "#000",
               margin: "0 0 16px 0",
-              textShadow: "0 2px 10px rgba(0,0,0,0.2)",
+              letterSpacing: "-1px",
             }}
           >
             Discover Our Collection
@@ -38,7 +44,7 @@ export default function ProductList({
           <p
             style={{
               fontSize: "18px",
-              color: "rgba(255, 255, 255, 0.9)",
+              color: "#666",
               margin: 0,
               fontWeight: "400",
             }}
@@ -50,16 +56,23 @@ export default function ProductList({
         {products.length === 0 ? (
           <div
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-              borderRadius: "16px",
+              backgroundColor: "white",
+              borderRadius: "8px",
               padding: "60px 40px",
               textAlign: "center",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+              boxShadow:
+                "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+              border: "1px solid #e0e0e0",
             }}
           >
             <div style={{ fontSize: "64px", marginBottom: "16px" }}>📦</div>
             <h3
-              style={{ fontSize: "24px", color: "#333", margin: "0 0 8px 0" }}
+              style={{
+                fontSize: "24px",
+                color: "#000",
+                margin: "0 0 8px 0",
+                fontWeight: "600",
+              }}
             >
               No Products Available
             </h3>

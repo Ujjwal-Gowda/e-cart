@@ -29,10 +29,11 @@ export default function App() {
   const loadProducts = async () => {
     try {
       const data = await api.getProducts();
+      console.log("Products loaded:", data);
       setProducts(data);
     } catch (err) {
       setError("Failed to load products");
-      console.error(err);
+      console.error("Error loading products:", err);
     } finally {
       setLoading(false);
     }
@@ -41,6 +42,7 @@ export default function App() {
   const loadCart = async () => {
     try {
       const data = await api.getCart();
+      console.log("Cart data loaded:", data);
       setCartItems(data.cart || []);
       setTotal(data.total || 0);
     } catch (err) {
@@ -88,7 +90,6 @@ export default function App() {
 
       await api.checkout(checkoutData);
 
-      // Clear cart after successful checkout
       for (const item of cartItems) {
         await api.removeFromCart(item._id);
       }
@@ -109,13 +110,13 @@ export default function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          backgroundColor: "#f5f5f5",
         }}
       >
         <div
           style={{
             fontSize: "24px",
-            color: "#fff",
+            color: "#000",
             fontWeight: "600",
             display: "flex",
             alignItems: "center",
@@ -126,8 +127,8 @@ export default function App() {
             style={{
               width: "40px",
               height: "40px",
-              border: "4px solid rgba(255,255,255,0.3)",
-              borderTop: "4px solid #fff",
+              border: "4px solid #e0e0e0",
+              borderTop: "4px solid #000",
               borderRadius: "50%",
               animation: "spin 1s linear infinite",
             }}
@@ -148,7 +149,7 @@ export default function App() {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        backgroundColor: "#f5f5f5",
       }}
     >
       <Navbar
@@ -163,13 +164,15 @@ export default function App() {
             position: "fixed",
             top: "80px",
             right: "20px",
-            backgroundColor: "#10b981",
+            backgroundColor: "#000",
             color: "white",
             padding: "16px 24px",
-            borderRadius: "12px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            borderRadius: "4px",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
             zIndex: 1000,
             animation: "slideIn 0.3s ease-out",
+            fontWeight: "600",
+            fontSize: "14px",
           }}
         >
           ✓ {notification}
@@ -182,15 +185,17 @@ export default function App() {
             position: "fixed",
             top: "80px",
             right: "20px",
-            backgroundColor: "#ef4444",
+            backgroundColor: "#dc2626",
             color: "white",
             padding: "16px 24px",
-            borderRadius: "12px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            borderRadius: "4px",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
             zIndex: 1000,
             display: "flex",
             alignItems: "center",
             gap: "12px",
+            fontWeight: "600",
+            fontSize: "14px",
           }}
         >
           <span>⚠ {error}</span>
