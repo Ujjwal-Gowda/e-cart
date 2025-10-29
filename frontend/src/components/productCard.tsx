@@ -54,7 +54,7 @@ export default function ProductCard({
       >
         {product.image ? (
           <img
-            src={`./public/images/${product.image}`}
+            src={`/images/${product.image}`}
             alt={product.name}
             style={{
               width: "100%",

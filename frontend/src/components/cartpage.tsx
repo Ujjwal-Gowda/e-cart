@@ -168,7 +168,7 @@ export default function CartPage({
               >
                 {item.productId?.image ? (
                   <img
-                    src={`./public/images/${item.productId.image}`}
+                    src={`/images/${item.productId.image}`}
                     alt={item.productId.name}
                     style={{
                       width: "100%",
