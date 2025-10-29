@@ -39,8 +39,9 @@ export default function ProductList({
               letterSpacing: "-1px",
             }}
           >
-            Discover Our Collection
-          </h2>
+            {" "}
+            Discover Our Collection{" "}
+          </h2>{" "}
           <p
             style={{
               fontSize: "18px",

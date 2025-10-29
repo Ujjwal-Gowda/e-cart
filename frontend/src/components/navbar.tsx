@@ -52,8 +52,8 @@ export default function Navbar({
           >
             <svg
               fill="#57e389"
-              width="133px"
-              height="133px"
+              width="182px"
+              height="182px"
               viewBox="-11 -11 132.00 132.00"
               xmlns="http://www.w3.org/2000/svg"
               stroke="#57e389"
@@ -86,7 +86,7 @@ export default function Navbar({
               letterSpacing: "-0.5px",
             }}
           >
-            Vibe Commerce
+            Plantify
           </h1>
         </div>
 
