@@ -1,16 +1,13 @@
 import { useState } from "react";
-import type { Receipt } from "../types";
 
 interface CheckoutModalProps {
   onClose: () => void;
   onSubmit: (name: string, email: string) => Promise<void>;
-  receipt?: Receipt;
 }
 
 export default function CheckoutModal({
   onClose,
   onSubmit,
-  receipt,
 }: CheckoutModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,195 +31,229 @@ export default function CheckoutModal({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        backdropFilter: "blur(4px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         zIndex: 1000,
         padding: "20px",
+        animation: "fadeIn 0.3s ease-out",
       }}
+      onClick={onClose}
     >
       <div
+        onClick={(e) => e.stopPropagation()}
         style={{
           backgroundColor: "white",
-          borderRadius: "12px",
-          padding: "32px",
+          borderRadius: "24px",
+          padding: "40px",
           maxWidth: "500px",
           width: "100%",
-          boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1)",
+          boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3)",
+          animation: "slideUp 0.3s ease-out",
         }}
       >
-        {!receipt ? (
-          <>
-            <h2 style={{ marginTop: 0, marginBottom: "24px", color: "#333" }}>
-              Checkout
-            </h2>
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: "16px" }}>
-                <label
-                  style={{
-                    display: "block",
-                    marginBottom: "8px",
-                    color: "#555",
-                    fontWeight: "500",
-                  }}
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    borderRadius: "6px",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                />
-              </div>
-              <div style={{ marginBottom: "24px" }}>
-                <label
-                  style={{
-                    display: "block",
-                    marginBottom: "8px",
-                    color: "#555",
-                    fontWeight: "500",
-                  }}
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    borderRadius: "6px",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                />
-              </div>
-              <div style={{ display: "flex", gap: "12px" }}>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    backgroundColor: "#6b7280",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    backgroundColor: loading ? "#93c5fd" : "#2563eb",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: loading ? "not-allowed" : "pointer",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {loading ? "Processing..." : "Complete Order"}
-                </button>
-              </div>
-            </form>
-          </>
-        ) : (
-          <>
-            <div style={{ textAlign: "center", marginBottom: "24px" }}>
-              <div
-                style={{
-                  fontSize: "48px",
-                  marginBottom: "16px",
-                }}
-              >
-                ✓
-              </div>
-              <h2 style={{ margin: "0 0 8px 0", color: "#16a34a" }}>
-                Order Successful!
-              </h2>
-              <p style={{ margin: 0, color: "#666" }}>
-                Thank you for your purchase
-              </p>
-            </div>
-            <div
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div
+            style={{
+              fontSize: "64px",
+              marginBottom: "16px",
+            }}
+          >
+            💳
+          </div>
+          <h2
+            style={{
+              margin: "0 0 8px 0",
+              fontSize: "32px",
+              fontWeight: "800",
+              color: "#1f2937",
+            }}
+          >
+            Complete Your Order
+          </h2>
+          <p style={{ margin: 0, color: "#6b7280", fontSize: "16px" }}>
+            Enter your details to finalize the purchase
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: "24px" }}>
+            <label
               style={{
-                backgroundColor: "#f9fafb",
-                padding: "16px",
-                borderRadius: "6px",
-                marginBottom: "24px",
+                display: "block",
+                marginBottom: "8px",
+                color: "#374151",
+                fontWeight: "600",
+                fontSize: "14px",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "8px",
-                }}
-              >
-                <span style={{ color: "#666" }}>Total Amount:</span>
-                <span
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    color: "#2563eb",
-                  }}
-                >
-                  ${receipt.total.toFixed(2)}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "14px",
-                }}
-              >
-                <span style={{ color: "#666" }}>Date:</span>
-                <span style={{ color: "#666" }}>
-                  {new Date(receipt.timestamp).toLocaleString()}
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={onClose}
+              Full Name
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="John Doe"
               style={{
                 width: "100%",
-                padding: "12px",
-                backgroundColor: "#2563eb",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
+                padding: "14px 16px",
+                border: "2px solid #e5e7eb",
+                borderRadius: "12px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+                transition: "border-color 0.2s ease",
+                outline: "none",
+              }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#667eea")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+            />
+          </div>
+
+          <div style={{ marginBottom: "32px" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "8px",
+                color: "#374151",
+                fontWeight: "600",
                 fontSize: "14px",
-                fontWeight: "500",
               }}
             >
-              Close
+              Email Address
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="john@example.com"
+              style={{
+                width: "100%",
+                padding: "14px 16px",
+                border: "2px solid #e5e7eb",
+                borderRadius: "12px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+                transition: "border-color 0.2s ease",
+                outline: "none",
+              }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#667eea")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e7eb")}
+            />
+          </div>
+
+          <div style={{ display: "flex", gap: "12px" }}>
+            <button
+              type="button"
+              onClick={onClose}
+              style={{
+                flex: 1,
+                padding: "16px",
+                backgroundColor: "#f3f4f6",
+                color: "#374151",
+                border: "none",
+                borderRadius: "12px",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontWeight: "600",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#e5e7eb";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#f3f4f6";
+              }}
+            >
+              Cancel
             </button>
-          </>
-        )}
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                flex: 1,
+                padding: "16px",
+                background: loading
+                  ? "#9ca3af"
+                  : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                color: "white",
+                border: "none",
+                borderRadius: "12px",
+                cursor: loading ? "not-allowed" : "pointer",
+                fontSize: "16px",
+                fontWeight: "700",
+                transition: "all 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                boxShadow: loading
+                  ? "none"
+                  : "0 4px 6px rgba(16, 185, 129, 0.3)",
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 15px rgba(16, 185, 129, 0.4)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 6px rgba(16, 185, 129, 0.3)";
+                }
+              }}
+            >
+              {loading ? (
+                <>
+                  <div
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      border: "2px solid rgba(255,255,255,0.3)",
+                      borderTop: "2px solid white",
+                      borderRadius: "50%",
+                      animation: "spin 0.8s linear infinite",
+                    }}
+                  />
+                  Processing...
+                </>
+              ) : (
+                <>✓ Place Order</>
+              )}
+            </button>
+          </div>
+        </form>
+
+        <style>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+          @keyframes slideUp {
+            from {
+              transform: translateY(20px);
+              opacity: 0;
+            }
+            to {
+              transform: translateY(0);
+              opacity: 1;
+            }
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     </div>
   );

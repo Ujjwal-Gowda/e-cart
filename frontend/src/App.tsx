@@ -1,23 +1,30 @@
 import { useState, useEffect } from "react";
 import { api } from "./api";
-import type { Product, CartItem, Receipt } from "./types";
-import ProductCard from "./components/productCard.tsx";
-import Cart from "./components/cart.tsx";
-import CheckoutModal from "./components/checkoutmodal.tsx";
+import type { Product, CartItem } from "./types";
+import ProductList from "./components/productlist.tsx";
+import CartPage from "./components/cartpage.tsx";
+import Navbar from "./components/navbar.tsx";
+
+type Page = "products" | "cart";
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState<Page>("products");
   const [products, setProducts] = useState<Product[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [receipt, setReceipt] = useState<Receipt>();
   const [error, setError] = useState<string>("");
+  const [notification, setNotification] = useState<string>("");
 
   useEffect(() => {
     loadProducts();
     loadCart();
   }, []);
+
+  const showNotification = (message: string) => {
+    setNotification(message);
+    setTimeout(() => setNotification(""), 3000);
+  };
 
   const loadProducts = async () => {
     try {
@@ -38,16 +45,21 @@ export default function App() {
       setTotal(data.total || 0);
     } catch (err) {
       console.error("Failed to load cart:", err);
+      setCartItems([]);
+      setTotal(0);
     }
   };
 
   const handleAddToCart = async (productId: string) => {
     try {
+      console.log("Adding to cart:", productId);
       await api.addToCart(productId, 1);
       await loadCart();
+      showNotification("Item added to cart!");
     } catch (err) {
-      setError("Failed to add to cart");
-      console.error(err);
+      console.error("Failed to add to cart:", err);
+      setError("Failed to add item to cart");
+      setTimeout(() => setError(""), 3000);
     }
   };
 
@@ -55,6 +67,7 @@ export default function App() {
     try {
       await api.removeFromCart(id);
       await loadCart();
+      showNotification("Item removed from cart");
     } catch (err) {
       setError("Failed to remove from cart");
       console.error(err);
@@ -73,23 +86,19 @@ export default function App() {
         })),
       };
 
-      const response = await api.checkout(checkoutData);
-      setReceipt(response.receipt);
+      await api.checkout(checkoutData);
 
       // Clear cart after successful checkout
       for (const item of cartItems) {
         await api.removeFromCart(item._id);
       }
       await loadCart();
+      showNotification("Order placed successfully!");
+      setCurrentPage("products");
     } catch (err) {
       setError("Checkout failed");
       console.error(err);
     }
-  };
-
-  const handleCloseCheckout = () => {
-    setShowCheckout(false);
-    setReceipt(undefined);
   };
 
   if (loading) {
@@ -100,10 +109,37 @@ export default function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#f3f4f6",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         }}
       >
-        <div style={{ fontSize: "18px", color: "#666" }}>Loading...</div>
+        <div
+          style={{
+            fontSize: "24px",
+            color: "#fff",
+            fontWeight: "600",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              border: "4px solid rgba(255,255,255,0.3)",
+              borderTop: "4px solid #fff",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+          Loading...
+        </div>
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }
@@ -112,106 +148,91 @@ export default function App() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#f3f4f6",
-        padding: "24px",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       }}
     >
-      <div
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-        }}
-      >
-        <header
-          style={{
-            marginBottom: "32px",
-            textAlign: "center",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "36px",
-              fontWeight: "bold",
-              color: "#1f2937",
-              margin: "0 0 8px 0",
-            }}
-          >
-            Vibe Commerce
-          </h1>
-          <p
-            style={{
-              fontSize: "16px",
-              color: "#6b7280",
-              margin: 0,
-            }}
-          >
-            Your one-stop shop for everything
-          </p>
-        </header>
+      <Navbar
+        cartCount={cartItems.length}
+        currentPage={currentPage}
+        onNavigate={setCurrentPage}
+      />
 
-        {error && (
-          <div
-            style={{
-              backgroundColor: "#fee2e2",
-              border: "1px solid #ef4444",
-              color: "#991b1b",
-              padding: "12px 16px",
-              borderRadius: "6px",
-              marginBottom: "24px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <span>{error}</span>
-            <button
-              onClick={() => setError("")}
-              style={{
-                background: "none",
-                border: "none",
-                color: "#991b1b",
-                cursor: "pointer",
-                fontSize: "18px",
-                padding: "0 4px",
-              }}
-            >
-              ×
-            </button>
-          </div>
-        )}
-
+      {notification && (
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "24px",
-            marginBottom: "32px",
+            position: "fixed",
+            top: "80px",
+            right: "20px",
+            backgroundColor: "#10b981",
+            color: "white",
+            padding: "16px 24px",
+            borderRadius: "12px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            zIndex: 1000,
+            animation: "slideIn 0.3s ease-out",
           }}
         >
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
+          ✓ {notification}
         </div>
+      )}
 
-        <Cart
+      {error && (
+        <div
+          style={{
+            position: "fixed",
+            top: "80px",
+            right: "20px",
+            backgroundColor: "#ef4444",
+            color: "white",
+            padding: "16px 24px",
+            borderRadius: "12px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <span>⚠ {error}</span>
+          <button
+            onClick={() => setError("")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "white",
+              cursor: "pointer",
+              fontSize: "20px",
+              padding: "0",
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
+
+      {currentPage === "products" ? (
+        <ProductList products={products} onAddToCart={handleAddToCart} />
+      ) : (
+        <CartPage
           cartItems={cartItems}
           total={total}
           onRemove={handleRemoveFromCart}
-          onCheckout={() => setShowCheckout(true)}
+          onCheckout={handleCheckout}
         />
-
-        {showCheckout && (
-          <CheckoutModal
-            onClose={handleCloseCheckout}
-            onSubmit={handleCheckout}
-            receipt={receipt}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 }

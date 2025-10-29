@@ -6,16 +6,15 @@ export const getCart = async (req: Request, res: Response) => {
   try {
     const carts = await cart.find().populate("productId");
 
-    if (!cart || carts.length === 0) {
-      return res.status(404).json({ message: "Your cart is empty" });
+    if (!carts || carts.length === 0) {
+      return res.status(200).json({ cart: [], total: 0 });
     }
-
     const total = carts.reduce(
       (sum, item: any) => sum + item.productId.price * item.quantity,
       0,
     );
 
-    return res.status(200).json({ cart, total });
+    return res.status(200).json({ cart: carts, total });
   } catch (error) {
     console.error("Error fetching cart:", error);
     return res.status(500).json({ message: "Failed to fetch cart", error });
