@@ -6,7 +6,7 @@ export const getCart = async (req: Request, res: Response) => {
   try {
     const carts = await cart.find().populate("productId");
 
-    if (!cart || cart.length === 0) {
+    if (!cart || carts.length === 0) {
       return res.status(404).json({ message: "Your cart is empty" });
     }
 
